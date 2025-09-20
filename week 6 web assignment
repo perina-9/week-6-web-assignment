@@ -1,0 +1,137 @@
+/project-folder
+│
+├── index.html       → Main HTML structure
+├── style.css        → Optional styling
+└── script.js        → JavaScript logic (event handling, interactivity, validation)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive JavaScript Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Welcome to My Interactive Page</h1>
+
+  <!-- Light/Dark Mode Toggle -->
+  <button id="themeToggle">Toggle Light/Dark Mode</button>
+
+  <!-- Counter Game -->
+  <div>
+    <h2>Counter: <span id="counter">0</span></h2>
+    <button id="incrementBtn">Increment</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+  <!-- Collapsible FAQ -->
+  <div class="faq">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <button class="faq-question">What is JavaScript?</button>
+      <div class="faq-answer">JavaScript is a programming language used to make web pages interactive.</div>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <form id="signupForm">
+    <h2>Sign Up</h2>
+    <label>Name: <input type="text" id="name" /></label><br />
+    <label>Email: <input type="email" id="email" /></label><br />
+    <label>Password: <input type="password" id="password" /></label><br />
+    <button type="submit">Submit</button>
+    <div id="formMessages"></div>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.faq-answer {
+  display: none;
+  margin-left: 10px;
+  color: #555;
+}
+
+.faq-question {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-weight: bold;
+}
+
+// 🌗 Light/Dark Mode Toggle
+document.getElementById("themeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+});
+
+// 🎮 Counter Game
+let count = 0;
+const counterDisplay = document.getElementById("counter");
+
+document.getElementById("incrementBtn").addEventListener("click", () => {
+  count++;
+  counterDisplay.textContent = count;
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  count = 0;
+  counterDisplay.textContent = count;
+});
+
+// 📚 Collapsible FAQ
+document.querySelectorAll(".faq-question").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const answer = btn.nextElementSibling;
+    answer.style.display = answer.style.display === "block" ? "none" : "block";
+  });
+});
+
+// 📋✅ Form Validation
+document.getElementById("signupForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // Prevent form submission
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const messages = [];
+
+  // Name validation
+  if (name.length < 2) {
+    messages.push("Name must be at least 2 characters long.");
+  }
+
+  // Email validation using regex
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    messages.push("Please enter a valid email address.");
+  }
+
+  // Password validation
+  if (password.length < 6) {
+    messages.push("Password must be at least 6 characters.");
+  }
+
+  // Display messages
+  const formMessages = document.getElementById("formMessages");
+  formMessages.innerHTML = "";
+  if (messages.length > 0) {
+    formMessages.innerHTML = messages.map(msg => `<p style="color:red;">${msg}</p>`).join("");
+  } else {
+    formMessages.innerHTML = `<p style="color:green;">Form submitted successfully!</p>`;
+    this.reset(); // Clear form
+  }
+});
+
